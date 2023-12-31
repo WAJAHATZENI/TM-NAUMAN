@@ -1,0 +1,92 @@
+<odoo>
+    <data>
+        <record id="task_manager_view_form" model="ir.ui.view">
+            <field name="name">task_manager_view_form</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <form string="task_manager_form">
+                    <header>
+                        <field name="completed" widget="statusbar"/>
+                        <button string="Mark as Completed" type="object" class="oe_highlight" name="mark_as_completed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="title"/>
+                            <field name="description"/>
+                            <field name="deadline"/>
+                            <field name="completed"/>
+                            <field name="days_left"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="task_manager_view_tree" model="ir.ui.view">
+            <field name="name">task_manager_view_tree</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <tree string="task_manager_tree">
+                    <field name="title"/>
+                    <field name="description"/>
+                    <field name="deadline"/>
+                    <field name="completed"/>
+                    <field name="days_left"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="task_manager_kanban" model="ir.ui.view">
+            <field name="name">task_manager.task.kanban</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="title"/>
+                    <field name="description"/>
+                    <field name="deadline"/>
+                    <field name="completed"/>
+                    <field name="days_left"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{record.completed ? 'oe_kanban_color_2' : ''}">
+                                <div class="oe_kanban_global_click">
+                                    <div class="oe_kanban_image">
+                                        <field name="title"/>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <field name="description"/>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <field name="deadline"/>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <field name="completed"/>
+                                    </div>
+                                    <div class="oe_kanban_details">
+                                        <field name="days_left"/>
+                                    </div>
+                                </div>
+                                <!--                                <div class="oe_kanban_footer">-->
+                                <!--                                    <button type="object" class="oe_kanban_action oe_kanban_mark_done"-->
+                                <!--                                            name="mark_as_completed" string="Mark as Completed"/>-->
+                                <!--                                </div>-->
+                            </div>
+                        </t>
+                    </templates>
+                    <search>
+                        <field name="completed" filter_domain="[('completed', '=', True)]"/>
+                    </search>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="task_manager_action" model="ir.actions.act_window">
+            <field name="name">Task Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">task.task</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <menuitem id="menu_task_manager" name="Task Manager" sequence="10"/>
+        <menuitem id="menu_task" name="Tasks List" parent="menu_task_manager" action="task_manager_action"/>
+    </data>
+</odoo>
